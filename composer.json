@@ -1,0 +1,33 @@
+{
+    "name":         "kodify/downloader",
+    "type":         "library",
+    "description":  "Simple downloader",
+    "keywords":     ["downloader","kodify","simple downloader"],
+    "version":      "1.0.0",
+    "time":         "2013-01-14",
+    "homepage":     "http://github.com/kodify/DownloaderBundle",
+    "license":      "Apache-2.0",
+    "authors":      [
+        {
+            "name": "Tomoki Kamo",
+            "email": "tomoki@kodify.io"
+        },
+        {
+            "name": "Fernando Palomo",
+            "email": "fernando@kodify.io"
+        },
+        {
+            "name": "Natxo Treig",
+            "email": "natxo@kodify.io"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Kodify\\DownloaderBundle":"" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "Kodify/DownloaderBundle"
+}
