@@ -3,9 +3,9 @@
 namespace Kodify\DownloaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Kodify\DownloaderBundle\Service\Downloader;
+use Kodify\DownloaderBundle\Service\Download;
 
-class DownloaderTest extends \PHPUnit_Framework_TestCase
+class DownloadTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $downloader;
@@ -13,59 +13,51 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->downloader = new Downloader();
+        $this->downloader = new Download();
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testDownloadFileWithoutPath()
+    public function testfileWithoutPath()
     {
-        $this->downloader->downloadFile('aaa', '', 'bbbb');
+        $this->downloader->file('aaa', '');
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testDownloadFileWithoutUrl()
+    public function testfileWithoutUrl()
     {
-        $this->downloader->downloadFile('', 'aaa', 'bbbb');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testDownloadFileWithoutDestination()
-    {
-        $this->downloader->downloadFile('aaa', 'bbb', '');
+        $this->downloader->file('', 'aaa');
     }
 
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function testDownloadFileWithPathNonWritable()
+    public function testfileWithPathNonWritable()
     {
         $nonWritablePath = '/etc/';
-        $this->downloader->downloadFile('aaa', $nonWritablePath, 'bbb');
+        $this->downloader->file('aaa', $nonWritablePath);
     }
 
 
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function testDownloadFileWithPathNonExistingAndNonWritable()
+    public function testfileWithPathNonExistingAndNonWritable()
     {
         $nonWritablePath = '/etc/test/';
-        $this->downloader->downloadFile('aaaa', $nonWritablePath, 'bbbb');
+        $this->downloader->file('aaaa', $nonWritablePath);
     }
 
-    public function testDownloadFileOKCreatingDirectory()
+    public function testfileOKCreatingDirectory()
     {
         $path = '/tmp/test/';
 
         $downloadUrl = 'http://www.google.com/robots.txt';
         $filename = 'downloadedFile.pl';
-        $this->downloader->downloadFile($downloadUrl, $path, $filename);
+        $this->downloader->file($downloadUrl, $path . $filename);
         $this->assertTrue(is_dir($path));
         $finalFile = "{$path}{$filename}";
         $this->assertTrue(file_exists($finalFile), 'File was not created');
@@ -76,13 +68,13 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         rmdir($path);
     }
 
-    public function testDownloadFileOKNotCreatingDirectory()
+    public function testfileOKNotCreatingDirectory()
     {
         $path = '/tmp/test/';
         mkdir($path, 0700);
         $downloadUrl = 'http://www.google.com/robots.txt';
         $filename = 'downloadedFile.pl';
-        $this->downloader->downloadFile($downloadUrl, $path, $filename);
+        $this->downloader->file($downloadUrl, $path . $filename);
         $this->assertTrue(is_dir($path));
         $finalFile = "{$path}{$filename}";
         $this->assertTrue(file_exists($finalFile), 'File was not created');
@@ -96,13 +88,13 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    public function testDownloadFileWrongUrl()
+    public function testfileWrongUrl()
     {
         $path = '/tmp/test/';
         mkdir($path, 0700);
         $downloadUrl = '\agfdsñakdsf';
         $filename = 'downloadedFile.pl';
-        $this->downloader->downloadFile($downloadUrl, $path, $filename);
+        $this->downloader->file($downloadUrl, $path . $filename);
         $this->assertTrue(is_dir($path));
         $finalFile = "{$path}{$filename}";
         $this->assertTrue(file_exists($finalFile), 'File was not created');
@@ -126,7 +118,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $path = '/tmp/test/';
         $filename = 'downloadedFile.pl';
         try {
-            $this->downloader->downloadFile($downloadUrl, $path, $filename);
+            $this->downloader->file($downloadUrl, $path . $filename);
         } catch(FileException $e) {
             $this->assertFalse(is_dir($dir));
         }
