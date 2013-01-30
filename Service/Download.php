@@ -65,16 +65,12 @@ class Download
 
         $dirName = dirname($to);
 
-        if (!isWritable($dirName)) {
+        if (!$this->isWritable($dirName)) {
             throw new FileException('Path is not writable');
         }
 
         if (!$this->isDirectory($dirName)) {
-            if ($this->isWritable($dirName)) {
-                mkdir($dirName, 0700);
-            } else {
-                throw new FileException('Path can not be created');
-            }
+            mkdir($dirName, 0700);
         }
 
     }
