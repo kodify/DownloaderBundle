@@ -13,6 +13,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        @rmdir("/tmp/test");
         $this->downloader = new Download();
     }
 
@@ -122,6 +123,6 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
         } catch(FileException $e) {
             $this->assertFalse(is_dir($dir));
         }
-
     }
+
 }
