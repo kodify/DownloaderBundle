@@ -17,17 +17,28 @@ class Download
         $this->copy($from, $to);
     }
 
-    protected function pathShouldBeCreated($path)
+    protected function isDirectory($path)
     {
         return !is_dir($path);
     }
 
 
-    protected function pathCanBeCreated($path)
+    /**
+     * Can I 
+     * @param $path
+     * @return bool
+     */
+    protected function isWritable($path)
     {
         return is_writable(dirname($path));
     }
 
+
+    /**
+     * Validates the from file
+     * @param string $from
+     * @throws \InvalidArgumentException
+     */
     protected function validateFrom($from)
     {
         if (empty($from)) {
@@ -35,6 +46,12 @@ class Download
         }
     }
 
+    /**
+     * Validates the destination file
+     * @param string $to
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
+     * @throws \InvalidArgumentException
+     */
     protected function validateTo($to)
     {
         if (empty($to)) {
@@ -47,8 +64,8 @@ class Download
             throw new FileException('Path is not writable');
         }
 
-        if ($this->pathShouldBeCreated($dirName)) {
-            if ($this->pathCanBeCreated($dirName)) {
+        if (!$this->isDirectory($dirName)) {
+            if ($this->isWritable($dirName)) {
                 mkdir($dirName, 0700);
             } else {
                 throw new FileException('Path can not be created');
