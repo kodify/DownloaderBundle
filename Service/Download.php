@@ -17,9 +17,14 @@ class Download
         $this->copy($from, $to);
     }
 
+    /**
+     * Check if the given argument is a directory
+     * @param string $path
+     * @return bool
+     */
     protected function isDirectory($path)
     {
-        return !is_dir($path);
+        return is_dir($path);
     }
 
 
@@ -60,7 +65,7 @@ class Download
 
         $dirName = dirname($to);
 
-        if (!is_writable($dirName)) {
+        if (!isWritable($dirName)) {
             throw new FileException('Path is not writable');
         }
 
