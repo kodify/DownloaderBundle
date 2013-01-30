@@ -88,8 +88,7 @@ class Download
 
         // FIXME I understand this is for large files but this
         // should be changed for something less dangerous
-        $cmd = "wget -c -q \"$from\" -O $to";
-        exec($cmd);
+        exec("wget -c -q \"$from\" -O $to");
 
         if (0 == filesize($to)) {
             throw new FileException('Void file downloaded');
