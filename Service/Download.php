@@ -14,7 +14,7 @@ class Download
     {
         $this->validateFrom($from);
         $this->validateTo($to);
-        $this->get($from, $to);
+        $this->copy($from, $to);
     }
 
     protected function pathShouldBeCreated($path)
@@ -43,6 +43,10 @@ class Download
 
         $dirName = dirname($to);
 
+        if (!is_writable($dirName)) {
+            throw new FileException('Path is not writable');
+        }
+
         if ($this->pathShouldBeCreated($dirName)) {
             if ($this->pathCanBeCreated($dirName)) {
                 mkdir($dirName, 0700);
@@ -51,18 +55,20 @@ class Download
             }
         }
 
-        if (!is_writable($dirName)) {
-            throw new FileException('Path is not writable');
-        }
-
     }
 
-    protected function get($from, $to)
+    /**
+     * Compy the file from one location to another
+     * @param String $from
+     * @param String $to
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
+     */
+    protected function copy($from, $to)
     {
         $from   = escapeshellcmd($from);
         $to     = escapeshellcmd($to);
 
-        // TODO I understand this is for large files but this
+        // FIXME I understand this is for large files but this
         // should be changed for something less dangerous
         $cmd = "wget -c -q \"$from\" -O $to";
         exec($cmd);
