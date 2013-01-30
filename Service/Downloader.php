@@ -19,6 +19,8 @@ class Downloader
             }
         }
 
+        $url = escapeshellcmd($url);
+
         if (is_writable($path)) {
             $outputFile = $path . $destinationFileName;
             $cmd = "wget -c -q \"$url\" -O $outputFile";
@@ -42,5 +44,6 @@ class Downloader
     {
         return is_writable(dirname($path));
     }
+
 
 }
