@@ -19,7 +19,13 @@ Add the following dependencies to your projects composer.json file:
       }
       
       
-      
+System dependecies
+------------
+### Wget:
+
+At the moment this Bundle is using wget software so you need to get installed on your machine.
+*This dependency shouldn't be necessary on the future
+
       
       
     
