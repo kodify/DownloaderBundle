@@ -13,7 +13,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        @rmdir("/tmp/test");
+        @rmdir(sys_get_temp_dir() . "test");
         $this->downloader = new Download();
     }
 
@@ -54,7 +54,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
 
     public function testfileOKCreatingDirectory()
     {
-        $path = '/tmp/test/';
+        $path = sys_get_temp_dir() . 'test/';
 
         $downloadUrl = 'http://www.google.com/robots.txt';
         $filename = 'downloadedFile.pl';
@@ -71,7 +71,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
 
     public function testfileOKNotCreatingDirectory()
     {
-        $path = '/tmp/test/';
+        $path = sys_get_temp_dir() . 'test/';
         mkdir($path, 0700);
         $downloadUrl = 'http://www.google.com/robots.txt';
         $filename = 'downloadedFile.pl';
@@ -91,7 +91,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testfileWrongUrl()
     {
-        $path = '/tmp/test/';
+        $path = sys_get_temp_dir() . 'test/';
         mkdir($path, 0700);
         $downloadUrl = '\agfdsñakdsf';
         $filename = 'downloadedFile.pl';
@@ -111,12 +111,12 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testCmdHacking()
     {
-        $dir = "/tmp/supu";
+        $dir = sys_get_temp_dir() . "supu";
         @rmdir($dir);
         $injectedCode = 'mkdir ' . $dir;
 
         $downloadUrl = '"; ' . $injectedCode . '; "';
-        $path = '/tmp/test/';
+        $path = sys_get_temp_dir() . 'test/';
         $filename = 'downloadedFile.pl';
         try {
             $this->downloader->file($downloadUrl, $path . $filename);
