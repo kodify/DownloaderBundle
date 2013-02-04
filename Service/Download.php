@@ -18,6 +18,18 @@ class Download
     }
 
     /**
+     * Download remote files
+     * @deprecated
+     * @param string $url
+     * @param string $path
+     * @param string $destinationFileName
+     */
+    public function downloadFile($url, $path, $destinationFileName)
+    {
+        return $this->file($url, $path.$destinationFileName);
+    }
+
+    /**
      * Check if the given argument is a directory
      * @param string $path
      * @return bool
