@@ -110,4 +110,23 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         rmdir($path);
     }
 
+    /**
+     * Fix for command line injection on exec
+     */
+    public function testCmdHacking()
+    {
+        $dir = "/tmp/supu";
+        @rmdir($dir);
+        $injectedCode = 'mkdir ' . $dir;
+
+        $downloadUrl = '"; ' . $injectedCode . '; "';
+        $path = '/tmp/test/';
+        $filename = 'downloadedFile.pl';
+        try {
+            $this->downloader->downloadFile($downloadUrl, $path, $filename);
+        } catch(FileException $e) {
+            $this->assertFalse(is_dir($dir));
+        }
+
+    }
 }
