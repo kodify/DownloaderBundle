@@ -24,7 +24,7 @@ abstract class DownloaderAbstract implements DownloaderInterface
      * Throw a void file downloaded exception
      * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
      */
-    protected function _thoughVoidFile()
+    protected function _throwVoidFile()
     {
         throw new FileException('Void file downloaded');
     }
@@ -46,7 +46,6 @@ abstract class DownloaderAbstract implements DownloaderInterface
      */
     protected function _doCopy($from, $to)
     {
-        exec("wget -c -q \"$from\" -O $to");
     }
 
     /**
