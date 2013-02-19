@@ -9,14 +9,18 @@ class Wget extends DownloaderAbstract implements DownloaderInterface
      * @param String $from
      * @param String $to
      */
-    public function copy($from, $to)
+    public function _doCopy($from, $to)
     {
-        $from   = escapeshellcmd($from);
-        $to     = escapeshellcmd($to);
-
         exec("wget -c -q \"$from\" -O $to");
+    }
 
-        if (0 == filesize($to)) {
+    /**
+     * Check if file is ok
+     * @param String $file
+     */
+    public function _checkFile($file)
+    {
+        if (0 == filesize($file)) {
             $this->_thoughVoidFile();
         }
     }

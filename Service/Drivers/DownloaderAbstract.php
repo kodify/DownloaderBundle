@@ -13,6 +13,11 @@ abstract class DownloaderAbstract implements DownloaderInterface
      */
     public function copy($from, $to)
     {
+        $from   = $this->_cleanForCommandLine($from);
+        $to     = $this->_cleanForCommandLine($to);
+
+        $this->_doCopy($from, $to);
+        $this->_checkFile($to);
     }
 
     /**
@@ -23,4 +28,34 @@ abstract class DownloaderAbstract implements DownloaderInterface
     {
         throw new FileException('Void file downloaded');
     }
+
+    /**
+     * Clean value for executing it on command line
+     * @param String $value
+     * @return String
+     */
+    protected function _cleanForCommandLine($value)
+    {
+        return escapeshellcmd($value);
+    }
+
+    /**
+     * Execute the copy command
+     * @param String $from
+     * @param String $to
+     */
+    protected function _doCopy($from, $to)
+    {
+        exec("wget -c -q \"$from\" -O $to");
+    }
+
+    /**
+     * Check if file is ok
+     * @param String $file
+     */
+    protected function _checkFile($file)
+    {
+    }
+
+
 }
