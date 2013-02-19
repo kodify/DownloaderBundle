@@ -97,7 +97,6 @@ class Download
      * Compy the file from one location to another
      * @param String $from
      * @param String $to
-     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
      */
     protected function copy($from, $to)
     {
