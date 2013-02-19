@@ -11,7 +11,7 @@ class Simple extends DownloaderAbstract implements DownloaderInterface
      */
     public function _doCopy($from, $to)
     {
-        file_put_contents($to, file_get_contents($from));
+        copy($from, $to);
     }
 }
 
