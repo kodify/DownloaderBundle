@@ -45,6 +45,7 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\FileException
+     * @group supu
      */
     public function testfileWithPathNonExistingAndNonWritable()
     {
