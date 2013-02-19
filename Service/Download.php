@@ -5,6 +5,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class Download
 {
+    protected $_driver = null;
+
     /**
      * Copy a file (url) to a given location
      * @param string $from
@@ -99,38 +101,29 @@ class Download
      */
     protected function copy($from, $to)
     {
-        $from   = escapeshellcmd($from);
-        $to     = escapeshellcmd($to);
-
-        // FIXME I understand this is for large files but this
-        // should be changed for something less dangerous
-        exec("wget -c -q \"$from\" -O $to");
-
-        if (0 == filesize($to)) {
-            throw new FileException('Void file downloaded');
-        }
+        $this->_driver()->copy($from, $to);
     }
 
 
     /**
      * Set the driver to download the file
-     * @param Kodify\DownloaderBundle\Service\Drivers\Downloader $driver
+     * @param Drivers\Downloader $driver
      */
-    public function with(Kodify\DownloaderBundle\Service\Drivers\Downloader $driver)
+    public function with(Drivers\Downloader $driver)
     {
-        $this->driver = $driver;
+        $this->_driver = $driver;
     }
 
     /**
      * Get the driver to do the download
-     * @return Kodify\DownloaderBundle\Service\Drivers\Downloader
+     * @return Drivers\Downloader
      */
     protected function _driver()
     {
-        if ($this->driver === null) {
-            $this->driver = new Kodify\DownloaderBundle\Service\Drivers\Wget;
+        if ($this->_driver === null) {
+            $this->_driver = new Drivers\Wget;
         }
-        return $this->driver;
+        return $this->_driver;
     }
 
 }
