@@ -21,7 +21,7 @@ class Wget extends DownloaderAbstract implements DownloaderInterface
     public function _checkFile($file)
     {
         if (0 == filesize($file)) {
-            $this->_thoughVoidFile();
+            $this->_throwVoidFile();
         }
     }
 }
