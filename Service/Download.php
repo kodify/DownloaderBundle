@@ -47,7 +47,7 @@ class Download
      */
     protected function isWritable($path)
     {
-        return is_writable(dirname($path));
+        return is_writable($path);
     }
 
 
@@ -73,6 +73,10 @@ class Download
     {
         if (empty($to)) {
             throw new \InvalidArgumentException('Wrong arguments');
+        }
+
+        if ($this->isDirectory($to)) {
+            throw new FileException('File already exists and is a directory');
         }
 
         $dirName = dirname($to);
@@ -108,5 +112,25 @@ class Download
     }
 
 
+    /**
+     * Set the driver to download the file
+     * @param Kodify\DownloaderBundle\Service\Drivers\Downloader $driver
+     */
+    public function with(Kodify\DownloaderBundle\Service\Drivers\Downloader $driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * Get the driver to do the download
+     * @return Kodify\DownloaderBundle\Service\Drivers\Downloader
+     */
+    protected function _driver()
+    {
+        if ($this->driver === null) {
+            $this->driver = new Kodify\DownloaderBundle\Service\Drivers\Wget;
+        }
+        return $this->driver;
+    }
 
 }
