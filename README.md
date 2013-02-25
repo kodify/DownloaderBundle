@@ -18,7 +18,29 @@ Add the following dependencies to your projects composer.json file:
           "kodify/downloader": "dev-master"
       }
       
-      
+
+Drivers
+-------
+The system architecture allows you to use different drivers as wget, curl or simple. Feel free to add your own drivers on Service/Drivers.
+
+Usage
+-----
+
+- Simple usage:
+
+$download = new Download();
+$download->file($from, $to);
+
+* Default downloads are done with wget
+
+
+- Using different drivers:
+
+$driver = new Kodify\DownloaderBundle\Service\Drivers\Simple;
+$download = new Download();
+$download->with($driver)->file($from, $to);
+ 
+     
 System dependecies
 ------------
 ### Wget:
