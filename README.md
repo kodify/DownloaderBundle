@@ -27,19 +27,19 @@ Usage
 -----
 
 - Simple usage:
-
+```php
 	$download = new Download();
 	$download->file($from, $to);
-
+```
 * Default downloads are done with wget
 
 
 - Using different drivers:
-
+```php
 	$driver = new Kodify\DownloaderBundle\Service\Drivers\Simple;
 	$download = new Download();
 	$download->with($driver)->file($from, $to);
- 
+```
      
 System dependecies
 ------------
