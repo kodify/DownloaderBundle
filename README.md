@@ -31,6 +31,7 @@ Usage
 	$download = new Download();
 	$download->file($from, $to);
 ```
+
 * Default downloads are done with wget
 
 
