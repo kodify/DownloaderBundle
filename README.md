@@ -28,7 +28,7 @@ Usage
 
 - Simple usage:
 ```php
-	$download = new Download();
+	$download = new Kodify\DownloaderBundle\Service\Download;
 	$download->file($from, $to);
 ```
 
@@ -38,7 +38,7 @@ Usage
 - Using different drivers:
 ```php
 	$driver = new Kodify\DownloaderBundle\Service\Drivers\Simple;
-	$download = new Download();
+	$download = new Kodify\DownloaderBundle\Service\Download;
 	$download->with($driver)->file($from, $to);
 ```
      
