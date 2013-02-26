@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class Downloader
 {
-    public function downloadFile($url, $path, $destinationFileName)
+    public function downloadFile($url, $path, $destinationFileName, $params = array())
     {
         if (empty($path) || empty($url) || empty($destinationFileName)) {
             throw new \InvalidArgumentException('Wrong arguments');
@@ -25,7 +25,14 @@ class Downloader
             $url = escapeshellcmd($url);
             $outputFile = escapeshellcmd($outputFile);
 
-            $cmd = "wget -c -q \"$url\" -O $outputFile";
+            $strParams = '';
+            if (is_array($params) && !empty($params)) {
+                foreach ($params as $value) {
+                    $strParams .= $value . ' ';
+                }
+            }
+
+            $cmd = "wget $strParams \"$url\" -O $outputFile";
             exec($cmd);
             if (0 == filesize($outputFile)) {
                 throw new FileException('Void file downloaded');
