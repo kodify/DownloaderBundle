@@ -7,7 +7,8 @@ function exec($command)
     $destParam = '-O';
     $destinationFilePath = trim(substr($command, strpos($command, $destParam) + strlen($destParam), strlen($command)));
 
-    file_put_contents($destinationFilePath, $command);
+    file_put_contents($destinationFilePath . '.out', $command);
+    return \exec($command);
 }
 
 
@@ -32,16 +33,16 @@ class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
 
     public function timeAgoDataProvider()
     {
-        $params1 = array('p1', 'p2', 'p3');
+        $params1 = array('-c', '-q');
         $params2 = null;
         $params3 = array();
         $params4 = new \stdClass();
 
         return array(
-            array($params1, 'wget p1 p2 p3  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
+            array($params1, 'wget -c -q  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
             array($params2, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
             array($params3, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
-            array($params4, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl')
+            array($params4, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
         );
     }
 
@@ -57,7 +58,7 @@ class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
         $this->downloader->downloadFile($downloadUrl, $path, $filename, $params);
 
         $finalFile = "{$path}{$filename}";
-        $this->assertTrue(file_exists($finalFile), 'File was not created');
-        $this->assertEquals($expected, file_get_contents($finalFile));
+        $this->assertTrue(file_exists($finalFile . '.out'), 'File was not created');
+        $this->assertEquals($expected, file_get_contents($finalFile . '.out'));
     }
 }
