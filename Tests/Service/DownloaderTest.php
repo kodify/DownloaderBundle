@@ -72,6 +72,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, filesize($finalFile), 'Filesize is not correct');
 
         unlink($finalFile);
+        unlink($finalFile . '.out');
         rmdir($path);
     }
 
@@ -88,6 +89,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, filesize($finalFile), 'Filesize is not correct');
 
         unlink($finalFile);
+        unlink($finalFile . '.out');
         rmdir($path);
     }
 
@@ -107,6 +109,7 @@ class DownloaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, filesize($finalFile), 'Filesize is not correct');
 
         unlink($finalFile);
+        unlink($finalFile . '.out');
         rmdir($path);
     }
 

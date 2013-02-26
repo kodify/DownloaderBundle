@@ -8,6 +8,7 @@ function exec($command)
     $destinationFilePath = trim(substr($command, strpos($command, $destParam) + strlen($destParam), strlen($command)));
 
     file_put_contents($destinationFilePath . '.out', $command);
+
     return \exec($command);
 }
 
@@ -22,27 +23,35 @@ use Kodify\DownloaderBundle\Service\Downloader;
  */
 class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $downloader;
-
+    protected $filename = 'downloadedFileTest2.pl';
+    protected $path = '/tmp/testWithParams/';
 
     public function setUp()
     {
+
         $this->downloader = new Downloader();
+    }
+
+    public function tearDown()
+    {
+        unlink($this->path . $this->filename);
+        unlink($this->path . $this->filename . '.out');
+        rmdir($this->path);
     }
 
     public function paramsDataProvider()
     {
-        $params1 = array('-c', '-q');
+        $params1 = array('-q', '-c');
         $params2 = null;
         $params3 = array();
         $params4 = new \stdClass();
 
         return array(
-            array($params1, 'wget -c -q  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
-            array($params2, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
-            array($params3, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
-            array($params4, 'wget  "http://www.google.com/robots.txt" -O /tmp/test/downloadedFile.pl'),
+            array($params1, 'wget -q -c  "http://www.google.com/robots.txt" -O ' . $this->path . $this->filename),
+            array($params2, 'wget  "http://www.google.com/robots.txt" -O ' . $this->path . $this->filename),
+            array($params3, 'wget  "http://www.google.com/robots.txt" -O ' . $this->path . $this->filename),
+            array($params4, 'wget  "http://www.google.com/robots.txt" -O ' . $this->path . $this->filename)
         );
     }
 
@@ -51,13 +60,13 @@ class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
      */
     public function testCmdWithParams($params, $expected)
     {
-        $path = '/tmp/test/';
-        $filename = 'downloadedFile.pl';
+        @mkdir($this->path, 0700);
+
         $downloadUrl = 'http://www.google.com/robots.txt';
 
-        $this->downloader->downloadFile($downloadUrl, $path, $filename, $params);
+        $this->downloader->downloadFile($downloadUrl, $this->path, $this->filename, $params);
 
-        $finalFile = "{$path}{$filename}";
+        $finalFile = $this->path . $this->filename;
         $this->assertTrue(file_exists($finalFile . '.out'), 'File was not created');
         $this->assertEquals($expected, file_get_contents($finalFile . '.out'));
     }
