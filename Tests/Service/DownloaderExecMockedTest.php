@@ -31,7 +31,7 @@ class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
         $this->downloader = new Downloader();
     }
 
-    public function timeAgoDataProvider()
+    public function paramsDataProvider()
     {
         $params1 = array('-c', '-q');
         $params2 = null;
@@ -47,7 +47,7 @@ class DownloaderExecMockedTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider timeAgoDataProvider
+     * @dataProvider paramsDataProvider
      */
     public function testCmdWithParams($params, $expected)
     {
