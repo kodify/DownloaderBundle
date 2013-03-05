@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class Downloader
 {
-    public function downloadFile($url, $path, $destinationFileName, $params = array())
+    public function downloadFile($url, $path, $destinationFileName, $params = array(), $escapeShellCmd = true)
     {
         if (empty($path) || empty($url) || empty($destinationFileName)) {
             throw new \InvalidArgumentException('Wrong arguments');
@@ -22,8 +22,10 @@ class Downloader
         if (is_writable($path)) {
             $outputFile = $path . $destinationFileName;
 
-            $url = escapeshellcmd($url);
-            $outputFile = escapeshellcmd($outputFile);
+            if ($escapeShellCmd) {
+                $url = escapeshellcmd($url);
+                $outputFile = escapeshellcmd($outputFile);
+            }
 
             $strParams = '';
             if (is_array($params) && !empty($params)) {
