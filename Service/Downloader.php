@@ -13,8 +13,8 @@ class Downloader
 
         if ($this->pathShouldBeCreated($path)) {
             if ($this->pathCanBeCreated($path)) {
-                mkdir($path, 0700);
-            } else {
+                mkdir($path, 0777);
+            } else 
                 throw new FileException('Path can not be created');
             }
         }
@@ -55,6 +55,5 @@ class Downloader
     {
         return is_writable(dirname($path));
     }
-
 
 }
