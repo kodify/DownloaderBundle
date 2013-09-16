@@ -13,13 +13,13 @@ class Downloader
 
         if ($this->pathShouldBeCreated($path)) {
             if ($this->pathCanBeCreated($path)) {
-                mkdir($path, 0777);
-            } else 
+                mkdir(dirname($path), 0777);
+            } else {
                 throw new FileException('Path can not be created');
             }
         }
 
-        if (is_writable($path)) {
+        if (is_writable(dirname($path))) {
             $outputFile = $path . $destinationFileName;
 
             if ($escapeShellCmd) {
@@ -45,15 +45,22 @@ class Downloader
         }
     }
 
-    protected function pathShouldBeCreated($path)
+    public function pathShouldBeCreated($path)
     {
         return !is_dir($path);
     }
 
-
-    protected function pathCanBeCreated($path)
+    public function pathCanBeCreated($path)
     {
-        return is_writable(dirname($path));
-    }
+       if (is_dir(dirname($path)) && is_writable(dirname($path))) {
+            return true;
+        } else {
+            if (!is_dir(dirname($path)) && $path != '/') {
+                return $this->pathCanBeCreated(dirname($path));
+            }
+        }
 
+        return false;
+    }
 }
+
