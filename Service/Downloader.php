@@ -13,7 +13,7 @@ class Downloader
 
         if ($this->pathShouldBeCreated($path)) {
             if ($this->pathCanBeCreated($path)) {
-                mkdir(dirname($path), 0777);
+                mkdir($path, 0777, true);
             } else {
                 throw new FileException('Path can not be created');
             }
