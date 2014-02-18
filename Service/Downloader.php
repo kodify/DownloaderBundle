@@ -36,6 +36,12 @@ class Downloader
 
             $cmd = "wget $strParams \"$url\" -O $outputFile";
             exec($cmd);
+            
+            //Windows and OS without wget
+            if(!file_exists($outputFile)) {
+                file_put_contents($outputFile, fopen($url, 'r'));
+            }
+            
             if (0 == filesize($outputFile)) {
                 throw new FileException('Void file downloaded');
             }
